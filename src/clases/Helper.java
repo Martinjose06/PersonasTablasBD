@@ -5,8 +5,16 @@
  */
 package clases;
 
+import interfaz.Agregar;
 import java.awt.Component;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -73,10 +81,6 @@ public class Helper {
         tm.setColumnCount(0);
         tm.setRowCount(0);
     }
-    
-    
- 
-
 
     public static int[][] pasarDatosMatriz(JTable tabla1) {
         int nf, nc;
@@ -87,38 +91,59 @@ public class Helper {
         for (int i = 0; i < m.length; i++) {
 
             for (int j = 0; j < m[i].length; j++) {
-                m[i][j] = (int)tabla1.getValueAt(i, j);
+                m[i][j] = (int) tabla1.getValueAt(i, j);
             }
         }
         return m;
     }
-    
-    public static void llenadoTabla(JTable tabla, ArrayList<Persona> personas){
+
+    public static void llenadoTabla(JTable tabla, String ruta) {
         int nf;
         DefaultTableModel tm;
+        ArrayList<Persona> personas = traerDatos(ruta);
         tm = (DefaultTableModel) tabla.getModel();
         nf = personas.size();
         tm.setRowCount(nf);
         limpiarTabla(tabla);
         for (int i = 0; i < nf; i++) {
-            tm.setValueAt(i+1, i, 0);
+            tm.setValueAt(i + 1, i, 0);
             tm.setValueAt(personas.get(i).getCedula(), i, 1);
             tm.setValueAt(personas.get(i).getNombre(), i, 2);
             tm.setValueAt(personas.get(i).getApellido(), i, 3);
         }
     }
-    
-   
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public static ArrayList traerDatos(String ruta){
+        FileInputStream archivo;
+            ObjectInputStream entrada;
+            ArrayList personas = new ArrayList();
+            Object p;
+        try {
+            archivo = new FileInputStream(ruta);
+            entrada = new ObjectInputStream(archivo);
+            while((p=entrada.readObject())!=null){
+                personas.add(p);
+            }
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());        
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       return personas;
+
+    }
+    public static void volcado(ObjectOutputStream salida, ArrayList personas){
+        for (int i = 0; i < personas.size(); i++) {
+            try {
+                salida.writeObject(personas.get(i));
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+            
+        }
+    }
 }

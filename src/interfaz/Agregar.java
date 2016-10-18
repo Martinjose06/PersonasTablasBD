@@ -7,7 +7,13 @@ package interfaz;
 
 import clases.Helper;
 import clases.Persona;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,12 +25,24 @@ public class Agregar extends javax.swing.JDialog {
     /**
      * Creates new form Agregar
      */
+    String ruta;
+    ObjectOutputStream salida;
     ArrayList<Persona> personas;
 
     public Agregar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        personas = new ArrayList();
+        ruta = "src/datos/personas.txt";
+        personas = Helper.traerDatos(ruta);
+        try {
+            salida = new ObjectOutputStream(new FileOutputStream(ruta));
+            Helper.volcado(salida, personas);
+            Helper.limpiarTabla(tblTabla);
+            Helper.llenadoTabla(tblTabla, ruta);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 
     /**
@@ -167,21 +185,26 @@ public class Agregar extends javax.swing.JDialog {
 
     private void cmdAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarActionPerformed
 
-        String cedula, nombre, apellido;
+        try {
+            String cedula, nombre, apellido;
 
-        cedula = txtCedula.getText();
-        nombre = txtNombre.getText();
-        apellido = txtApellido.getText();
+            cedula = txtCedula.getText();
+            nombre = txtNombre.getText();
+            apellido = txtApellido.getText();
 
-        Persona p = new Persona(cedula, nombre, apellido);
+            Persona p = new Persona(cedula, nombre, apellido);
 
-        personas.add(p);
-        Helper.llenadoTabla(tblTabla, personas);
+            p.guardar(salida);
+            Helper.llenadoTabla(tblTabla, ruta);
+            txtCedula.setText("");
+            txtNombre.setText("");
+            txtApellido.setText("");
+            txtCedula.requestFocusInWindow();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
 
-        txtCedula.setText("");
-        txtNombre.setText("");
-        txtApellido.setText("");
-        txtCedula.requestFocusInWindow();
+
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
     private void cmdLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLimpiarActionPerformed
@@ -209,16 +232,25 @@ public class Agregar extends javax.swing.JDialog {
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
 
         int i, op;
-        i = tblTabla.getSelectedRow();
+
         op = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar?", "Eliminar", JOptionPane.YES_NO_OPTION);
         if (op == JOptionPane.YES_OPTION) {
-            personas.remove(i);
 
-            Helper.llenadoTabla(tblTabla, personas);
-            txtCedula.setText("");
-            txtNombre.setText("");
-            txtApellido.setText("");
-            txtCedula.requestFocusInWindow();
+            try {
+                i = tblTabla.getSelectedRow();
+                personas.remove(i);
+                salida = new ObjectOutputStream(new FileOutputStream(ruta));
+                Helper.volcado(salida, personas);
+                Helper.llenadoTabla(tblTabla, ruta);
+                txtCedula.setText("");
+                txtNombre.setText("");
+                txtApellido.setText("");
+                txtCedula.requestFocusInWindow();
+
+            } catch (IOException ex) {
+                Logger.getLogger(Agregar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
     }//GEN-LAST:event_cmdEliminarActionPerformed
@@ -253,7 +285,8 @@ public class Agregar extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Agregar dialog = new Agregar(new javax.swing.JFrame(), true);
+                Agregar dialog = null;
+                dialog = new Agregar(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
