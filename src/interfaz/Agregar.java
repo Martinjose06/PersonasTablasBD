@@ -61,6 +61,7 @@ public class Agregar extends javax.swing.JDialog {
         cmdAgregar = new javax.swing.JButton();
         cmdEliminar = new javax.swing.JButton();
         cmdLimpiar = new javax.swing.JButton();
+        cmdNuevo = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
@@ -101,7 +102,7 @@ public class Agregar extends javax.swing.JDialog {
                 cmdAgregarActionPerformed(evt);
             }
         });
-        jPanel2.add(cmdAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+        jPanel2.add(cmdAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         cmdEliminar.setText("Eliminar");
         cmdEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -109,7 +110,7 @@ public class Agregar extends javax.swing.JDialog {
                 cmdEliminarActionPerformed(evt);
             }
         });
-        jPanel2.add(cmdEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        jPanel2.add(cmdEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
 
         cmdLimpiar.setText("Limpiar");
         cmdLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -117,9 +118,12 @@ public class Agregar extends javax.swing.JDialog {
                 cmdLimpiarActionPerformed(evt);
             }
         });
-        jPanel2.add(cmdLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 70, -1));
+        jPanel2.add(cmdLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 70, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 110, 190));
+        cmdNuevo.setText("Nuevo");
+        jPanel2.add(cmdNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 70, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 110, 200));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos"));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -139,7 +143,7 @@ public class Agregar extends javax.swing.JDialog {
         jLabel1.setText("Sexo");
         jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
 
-        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino", "Indefinido" }));
         jPanel3.add(cmbSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 100, -1));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 200, 200));
@@ -152,11 +156,11 @@ public class Agregar extends javax.swing.JDialog {
 
             },
             new String [] {
-                "No.", "Cedula", "Nombre", "Apellido"
+                "No.", "Cedula", "Nombre", "Apellido", "Sexo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -170,24 +174,24 @@ public class Agregar extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(tblTabla);
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 390, 150));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 470, 150));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 440, 190));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 510, 190));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(501, 471));
+        setSize(new java.awt.Dimension(649, 471));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -220,6 +224,7 @@ public class Agregar extends javax.swing.JDialog {
         txtCedula.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
+        cmbSexo.setSelectedItem(0);
         txtCedula.requestFocusInWindow();
 
     }//GEN-LAST:event_cmdLimpiarActionPerformed
@@ -228,12 +233,14 @@ public class Agregar extends javax.swing.JDialog {
 
         Persona p;
         int i;
+        personas = Helper.traerDatos(ruta);
         i = tblTabla.getSelectedRow();
         p = personas.get(i);
 
         txtCedula.setText(p.getCedula());
         txtNombre.setText(p.getNombre());
         txtApellido.setText(p.getApellido());
+        cmbSexo.setSelectedItem(p.getSexo());
 
 
     }//GEN-LAST:event_tblTablaMouseClicked
@@ -312,6 +319,7 @@ public class Agregar extends javax.swing.JDialog {
     private javax.swing.JButton cmdAgregar;
     private javax.swing.JButton cmdEliminar;
     private javax.swing.JButton cmdLimpiar;
+    private javax.swing.JButton cmdNuevo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

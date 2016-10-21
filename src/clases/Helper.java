@@ -110,6 +110,22 @@ public class Helper {
             tm.setValueAt(personas.get(i).getCedula(), i, 1);
             tm.setValueAt(personas.get(i).getNombre(), i, 2);
             tm.setValueAt(personas.get(i).getApellido(), i, 3);
+            tm.setValueAt(personas.get(i).getSexo(), i, 4);
+        }
+    }
+    public static void llenadoTabla(JTable tabla, ArrayList <Persona> personas) {
+        int nf;
+        DefaultTableModel tm;
+        tm = (DefaultTableModel) tabla.getModel();
+        nf = personas.size();
+        tm.setRowCount(nf);
+        limpiarTabla(tabla);
+        for (int i = 0; i < nf; i++) {
+            tm.setValueAt(i + 1, i, 0);
+            tm.setValueAt(personas.get(i).getCedula(), i, 1);
+            tm.setValueAt(personas.get(i).getNombre(), i, 2);
+            tm.setValueAt(personas.get(i).getApellido(), i, 3);
+            tm.setValueAt(personas.get(i).getSexo(), i, 4);
         }
     }
 
@@ -145,5 +161,18 @@ public class Helper {
             }
             
         }
+    }
+    
+    
+    public static void listarPorSexo(JTable tabla, String ruta, String sexo){
+        ArrayList <Persona> personas = traerDatos(ruta);
+        ArrayList <Persona>personasFiltrada = new ArrayList();
+        llenadoTabla(tabla, ruta);
+        for (int i = 0; i < personas.size(); i++) {
+            if (personas.get(i).getSexo().equals(sexo)) {
+                personasFiltrada.add(personas.get(i));
+            }
+        }
+        llenadoTabla(tabla, personasFiltrada);
     }
 }

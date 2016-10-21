@@ -5,6 +5,11 @@
  */
 package interfaz;
 
+import clases.Helper;
+import clases.Persona;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 /**
  *
  * @author mzuleta4
@@ -14,8 +19,10 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    String ruta;
     public Principal() {
         initComponents();
+        ruta = "src/datos/personas.txt";
     }
 
     /**
@@ -27,14 +34,31 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         MnAgregar = new javax.swing.JMenuItem();
-        MnReporte = new javax.swing.JMenuItem();
+        mnReporte = new javax.swing.JMenu();
+        mnListadoSexo = new javax.swing.JMenuItem();
+        mnNumeroPersonasIngresadas = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         MnSalir = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PERSONAS");
@@ -55,8 +79,25 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(MnAgregar);
 
-        MnReporte.setText("Reporte");
-        jMenu3.add(MnReporte);
+        mnReporte.setText("Reporte");
+
+        mnListadoSexo.setText("Listado por sexo");
+        mnListadoSexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnListadoSexoActionPerformed(evt);
+            }
+        });
+        mnReporte.add(mnListadoSexo);
+
+        mnNumeroPersonasIngresadas.setText("Numero de personas Ingresadas");
+        mnNumeroPersonasIngresadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnNumeroPersonasIngresadasActionPerformed(evt);
+            }
+        });
+        mnReporte.add(mnNumeroPersonasIngresadas);
+
+        jMenu3.add(mnReporte);
         jMenu3.add(jSeparator1);
 
         MnSalir.setText("Salir");
@@ -99,6 +140,19 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_MnSalirActionPerformed
 
+    private void mnListadoSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnListadoSexoActionPerformed
+
+        ListadoPorSexo lps = new ListadoPorSexo(this,true);
+        lps.setVisible(true);
+    }//GEN-LAST:event_mnListadoSexoActionPerformed
+
+    private void mnNumeroPersonasIngresadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNumeroPersonasIngresadasActionPerformed
+
+        int cont;
+        cont = Helper.traerDatos(ruta).size();
+        Helper.mensaje(this, "Numero de personas es: "+cont, "Numero de personas ingresadas",1);
+    }//GEN-LAST:event_mnNumeroPersonasIngresadasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -136,12 +190,16 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MnAgregar;
-    private javax.swing.JMenuItem MnReporte;
     private javax.swing.JMenuItem MnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem mnListadoSexo;
+    private javax.swing.JMenuItem mnNumeroPersonasIngresadas;
+    private javax.swing.JMenu mnReporte;
     // End of variables declaration//GEN-END:variables
 }
