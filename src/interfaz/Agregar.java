@@ -68,6 +68,8 @@ public class Agregar extends javax.swing.JDialog {
         txtNombre = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtApellido = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        cmbSexo = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblTabla = new javax.swing.JTable();
@@ -134,7 +136,13 @@ public class Agregar extends javax.swing.JDialog {
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
         jPanel3.add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 100, -1));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 200, 190));
+        jLabel1.setText("Sexo");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
+
+        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        jPanel3.add(cmbSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 100, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 200, 200));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -186,13 +194,14 @@ public class Agregar extends javax.swing.JDialog {
     private void cmdAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarActionPerformed
 
         try {
-            String cedula, nombre, apellido;
+            String cedula, nombre, apellido, sexo;
 
             cedula = txtCedula.getText();
             nombre = txtNombre.getText();
             apellido = txtApellido.getText();
+            sexo = cmbSexo.getSelectedItem().toString();
 
-            Persona p = new Persona(cedula, nombre, apellido);
+            Persona p = new Persona(cedula, nombre, apellido, sexo);
 
             p.guardar(salida);
             Helper.llenadoTabla(tblTabla, ruta);
@@ -299,9 +308,11 @@ public class Agregar extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbSexo;
     private javax.swing.JButton cmdAgregar;
     private javax.swing.JButton cmdEliminar;
     private javax.swing.JButton cmdLimpiar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
